@@ -19,8 +19,6 @@
         </p>
         <p id="chrono" v-bind:class="{
               newsec: duration.milliseconds() < 100 && running && !duration.asSeconds() < 1,
-              tada: !running,
-              animated: true,
               final: !running
             }">
             <span class="count-seconds">{{ formatDurationSecondsPart(duration, running) }}</span>.
