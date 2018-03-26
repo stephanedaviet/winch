@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/locale/fr.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/1.3.0/moment-duration-format.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+    </head>
+    <body>
+    <div id="score">
+        <p id="loops" v-bind:class="{ running: running }"   >
+            <span class="count">{{ loops.toLocaleString().padStart(2, '0') }}</span>
+        </p>
+        <p id="chrono" v-bind:class="{
+              newsec: duration.milliseconds() < 100 && running && !duration.asSeconds() < 1,
+              tada: !running,
+              animated: true,
+              final: !running
+            }">
+            <span class="count-seconds">{{ formatDurationSecondsPart(duration, running) }}</span>.
+            <span class="count-ms">{{ formatDurationMsPart(duration) }}</span>
+        </p>
+    </div>
+    <script type="text/javascript">
+        var start = moment();
+        var app = new Vue({
+            el: '#score',
+            data: {
+                loops: 0,
+                duration: moment.duration(moment().diff(start)),
+                running: false
+            },
+            methods: {
+                formatDurationSecondsPart: function(duration, running) {
+                    var pattern = "mm:ss";
+                    if (duration.seconds() % 2 == 0 && running) {
+                        pattern = "mm ss";
+                    }
+                    return duration.format(pattern, { trim: false });
+                },
+                formatDurationMsPart: function(duration) {
+                    return duration.milliseconds().toLocaleString().padStart(3, '0');
+                }
+            }
+        });
+
+        app.running = true;
+        var stopWatch = window.setInterval(function() {
+            app.duration = moment.duration(moment().diff(start));
+        }, 10);
+
+        var periodicIncrement = window.setInterval(function() {
+            app.loops++;
+            if (app.loops > 5 + Math.ceil(Math.random() * 10)) {
+                window.clearInterval(periodicIncrement);
+                window.clearInterval(stopWatch);
+                app.running = false;
+            }
+        }, 500);
+    </script>
+    </body>
+</html>

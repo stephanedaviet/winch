@@ -1,0 +1,81 @@
+@font-face {
+    font-family: "DSEG";
+    src: url("fonts/DSEG_v045/DSEG7-Modern/DSEG7Modern-BoldItalic.woff") format("woff");
+}
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+body {
+    text-align: center;
+    font-size: 3em;
+    font-family: sans-serif;
+    background: black;
+    background-image: url('tiles.svg');
+    background-size: 0.3em auto;
+    background-repeat: repeat;
+    padding-top: 1em;
+}
+#score {
+    position: relative;
+    margin: auto;
+    width: 40%;
+    text-align: center;
+}
+#score p {
+    font-family: 'DSEG';
+}
+#loops {
+    padding: 0.2em;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
+    margin: auto;
+    background: white;
+    border-radius: 1.7em;
+}
+#loops::before {
+    content: '';
+    position: absolute;
+    top: 0.2em;
+    left: 0.2em;
+    width: 3em;
+    height: 3em;
+    background-image: url('loops.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+#loops.running::before {
+    animation: rotate 1s linear infinite;
+    transition-property: transform;
+    transition-timing-function: linear;
+    transition-duration: 0.5s;
+}
+#chrono {
+    padding: 0.2em 0 0.2em 1.1em;
+    border: solid 0.05em black;
+    border-radius: 0.3em;
+    background-color: white;
+    background-image: url('clock.svg');
+    background-repeat: no-repeat;
+    background-size: 1em 1em;
+    background-position: 0.5em center;
+    background-origin: padding-box;
+    transition-property: transform;
+    transition-timing-function: ease;
+    transition-duration: 0.4s;
+}
+#chrono.newsec {
+    transform: scale(1.3);
+}
+#chrono.animated {
+    animation-fill-mode: none;
+}
+#chrono.final {
+    color: #d40000;
+    transform: scale(1.3) rotate(-3deg);
+}
+#chrono .count-ms {
+    font-size: 75%;
+}
